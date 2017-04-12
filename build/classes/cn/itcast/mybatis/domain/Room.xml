@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itcast.mybatis.domain.Room">
+
+   <resultMap id="Roomment" type="xRoom">
+        <id property="rid" column="rid" />
+        <result property="player" column="player" />
+                
+        <association property="step" javaType="xStep">
+            
+            <id property="rid" column="rid" />
+            <result property="id" column="id" />
+            <result property="num" column="num" />
+            <result property="cla" column="cla" />            
+        </association>        
+    </resultMap>
+
+
+<select id="getrid" parameterType="string" resultMap="Roomment">
+		select * from room where rid=#{id}
+	</select>
+
+
+</mapper>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.itcast.mybatis.domain.Step">
+<resultMap id="Stepment" type="xStep">
+        <id column="id" property="id" />
+        <result column="cla" property="cla" />
+        <result column="num" property="num" />
+    </resultMap>
+        <resultMap id="stepment" type="xStep">
+            <id property="id" column="id" />
+            <result property="num" column="num" />
+            <result property="cla" column="cla" /> 
+                                  
+       <association property ="room" javaType="xRoom">
+        <id property="rid" column="rid" />
+        <result property="player" column="player" />
+        </association>        
+    </resultMap>
+
+
+<select id="getrid" parameterType="string" resultMap="stepment">
+		select p.*, o.* from step p, room o where p.rid  = o.rid and p.id = #{id}
+	</select>
+	<sql id="cols">
+		id,num,cla
+	</sql>
+	
+
+	<sql id="ucols">
+		num=#{num},cla=#{cla}
+	</sql>
+
+	<!-- 查询所有记录 -->
+	<select id="listAll" resultType="xStep">
+		select <include refid="cols"/> from step 
+	</select>
+	
+	<!-- 按条件查询 
+	<select id="find" parameterType="xStep" resultType="xStep">
+		select * from step
+		<where>
+		<if test="name!=null">
+			and name like "%"#{name}"%"
+		</if>
+		<if test="age!=null">
+			and age=#{age}
+		</if>
+		</where>
+	</select>-->
+	
+	<!-- 查询一个用户 -->
+	<select id="get" parameterType="string" resultMap="Stepment">
+		select * from step where id=#{id}
+	</select>
+	
+	<!-- 新增 -->
+	<insert id="create" parameterType="xStep">
+		insert into step (id,num,cla) values(#{id},#{num},#{cla})
+	</insert>
+	
+	<!-- 修改 -->
+	<update id="update" parameterType="xStep">
+		update step
+		 <set>
+			 <if test="num!=null">
+			 	num=#{num},
+			 </if>
+			 <if test="cla!=null">
+			 	cla=#{cla},
+			 </if>			
+		 </set>		 
+		where id=#{id}
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="string">
+		delete from step where id=#{id}
+	</delete>
+</mapper>
